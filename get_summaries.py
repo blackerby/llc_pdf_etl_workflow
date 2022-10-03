@@ -55,7 +55,7 @@ def extract_summaries_and_metadata(reader, file_stem, start_page, end_page):
         page_text = reader.pages[i].extract_text()
 
         header_pattern = re.compile(
-            r"(((?:S|H)\.? (?:R\.? (?:J\.? Res\. ?)?)?)(\w{1,5})\.? ((?:M(?:r|essrs)\.) .+); (\w{1,9} \d{1,2}, \d{4})\.?\ \(([a-zA-Z ]+)\)(?:\.|.+\.))"
+                r"(((?:S|H)\.? (?:R\.? (?:J\.? Res\. ?)?)?)(\w{1,5})\.? ((?:M(?:r|essrs)\.) .+)(?:;|,) (\w{1,9} \d{1,2}, \d{4})\.?\ \(([a-zA-Z ]+)\)(?:\.|.+\.))"
         )
 
         first_header_pos = re.search(header_pattern, page_text).start()
