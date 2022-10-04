@@ -2,6 +2,7 @@
 
 for f in *.txt
 do
+	gsed -i.bak -z -f ../mark_lines.sed $f
 	# interactive part:
 	aspell check $f
 	# insert '@' to mark newlines to keep
