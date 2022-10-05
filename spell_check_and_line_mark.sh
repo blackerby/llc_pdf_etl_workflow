@@ -9,5 +9,5 @@ do
 	# rename file according to latest action
 	# command in vim for above: :saveas %:r_YYYYMMDD_%:e
 	nvim $f
-	rm $f
+	# rm $f
 done

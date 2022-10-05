@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import sys
 import re
 import csv
 from pathlib import Path
@@ -13,6 +14,25 @@ ELEMENT_COUNT = (
 )
 CONGRESS_POSITION = 2
 SESSION_POSITION = 3
+MONTHS = {
+    "January": "01",
+    "February": "02",
+    "March": "03",
+    "April": "04",
+    "Apr.": "04",
+    "May": "05",
+    "June": "06",
+    "July": "07",
+    "August": "08",
+    "September": "09",
+    "October": "10",
+    "November": "11",
+    "December": "12",
+}
+HEADER_PATTERN = re.compile(
+    r"(((?:S|H)\.? (?:R\.? (?:J\.? Res\. ?)?)?)(\w{1,5})\.? ((?:M(?:r|essrs)\.) .+)(?:;|,) (\w{1,9} \d{1,2}, \d{4})\.?\ \(([a-zA-Z ]+)\)(?:\.|.+\.|:|.+:))"
+)
+DATE_PATTERN = re.compile(r"([JFMASOND][.a-z]{2,8}) (\d{1,2})[-—.,;: ]( \d{4})?")
 
 
 def parse_args():
@@ -54,13 +74,9 @@ def extract_summaries_and_metadata(reader, file_stem, start_page, end_page):
     for i in range(start_page, end):
         page_text = reader.pages[i].extract_text()
 
-        header_pattern = re.compile(
-                r"(((?:S|H)\.? (?:R\.? (?:J\.? Res\. ?)?)?)(\w{1,5})\.? ((?:M(?:r|essrs)\.) .+)(?:;|,) (\w{1,9} \d{1,2}, \d{4})\.?\ \(([a-zA-Z ]+)\)(?:\.|.+\.))"
-        )
-
-        first_header_pos = re.search(header_pattern, page_text).start()
+        first_header_pos = re.search(HEADER_PATTERN, page_text).start()
         page_text = page_text[first_header_pos:]
-        raw_summaries = re.split(header_pattern, page_text)[1:]
+        raw_summaries = re.split(HEADER_PATTERN, page_text)[1:]
         raw_summaries = list(chunked(raw_summaries, ELEMENT_COUNT))
 
         for item in raw_summaries:
@@ -72,9 +88,40 @@ def extract_summaries_and_metadata(reader, file_stem, start_page, end_page):
                 [formatted_bill_type, bill_number, sponsor, date, committee]
             )
             summaries.append(summary)
-            text_file_names.append(f"{file_stem}_{lower_bill_type}{bill_number}.txt")
+            text_file_names.append(f"{file_stem}_{lower_bill_type}{bill_number}")
 
     return (metadata, summaries, text_file_names)
+
+
+def format_latest_action_dates(summaries):
+    actions = []
+    date_tags = []
+
+    for summary in summaries:
+        lines = summary.splitlines()
+        actions.append(lines[1])
+
+    for action in actions:
+        dates = re.findall(DATE_PATTERN, action)
+        default_year = dates[0][2]
+        date = list(dates[-1])
+        if date[2] == "":
+            date[2] = default_year
+        date[0] = MONTHS[date[0]]
+        date_tag = f"{date[2].strip()}{date[0]}{date[1].zfill(2)}"
+        date_tags.append(date_tag)
+
+    return date_tags
+
+
+def format_output_files(text_file_names, date_tags):
+    if len(text_file_names) != len(date_tags):
+        print("Text files names list and date tags list are not the same length.")
+        sys.exit(1)
+    filenames = map(
+        lambda name: "_".join(name) + ".txt", list(zip(text_file_names, date_tags))
+    )
+    return list(filenames)
 
 
 def write_metadata(metadata, output_file_name, congress):
@@ -145,5 +192,8 @@ if __name__ == "__main__":
         reader, file_stem, start_page_index, end_page
     )
 
+    action_dates = format_latest_action_dates(summaries)
+    output_file_names = format_output_files(text_file_names, action_dates)
+
     write_metadata(metadata, output_file_name, congress)
-    write_summaries(summaries, text_file_names)
+    write_summaries(summaries, output_file_names)
