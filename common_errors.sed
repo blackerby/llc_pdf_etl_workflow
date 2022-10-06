@@ -5,3 +5,6 @@ s/\banv\b/any/g
 s/\bdenved\b/derived/g
 s/\bm\b/in/g
 s/\bpiopose\b/piopose/g
+s/\bwhioh\b/which/g
+s/\beto.\b/etc./g
+s/\bwit inn\b/within/g

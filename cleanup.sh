@@ -1,10 +1,7 @@
 #!/usr/bin/env zsh
 
 # remove temporary files 
-if [[ -f *.bak ]]
-then
-	rm *.bak
-fi
+rm -f *.bak
 
 for f in *.txt
 do
