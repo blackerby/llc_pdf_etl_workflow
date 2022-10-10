@@ -21,10 +21,7 @@ then
 	nvim -q errors
 fi
 
-if [[ -s errors ]]
-then
-	rm errors
-fi
+rm -f errors
 
 # final check
 for f in *.txt

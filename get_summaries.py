@@ -61,10 +61,12 @@ def name_output_file(file_stem, start_page, end_page):
         return "_".join([file_stem, str(start_page)]) + ".csv"
 
 
-def extract_summaries_and_metadata(reader, file_stem, start_page, end_page):
+def extract_summaries_and_metadata(file_path, start_page, end_page):
     metadata = []
     summaries = []
     text_file_names = []
+    reader = PdfReader(file_path)
+    file_stem = file_path.stem
 
     if end_page == None:
         end = start_page + 1
@@ -186,10 +188,8 @@ if __name__ == "__main__":
     congress = file_stem[:CONGRESS_POSITION]
     session = file_stem[SESSION_POSITION]
 
-    reader = PdfReader(file_path)
-
     metadata, summaries, text_file_names = extract_summaries_and_metadata(
-        reader, file_stem, start_page_index, end_page
+        file_path, start_page_index, end_page
     )
 
     action_dates = format_latest_action_dates(summaries)
