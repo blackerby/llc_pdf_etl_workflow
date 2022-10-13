@@ -1,5 +1,12 @@
 #!/usr/bin/env ruby
 
+#   Experimenting with the ruby `pdf-reader` gem. Its text output is way different from what
+#   PyPDF2 returns. When text extracted by `pdf-reader` is printed, it looks virtually like
+#   the page it came from in terms of formatting. But, at least on page 26 of 74_2.pdf, PyPDF2 is far
+#   more accurate. There are some characters that `pdf-reader` ignores or throws away or something.
+#   I wish it worked, though. It prints "\n\n" between each bill summary, which makes splitting the
+#   summaries, much, much easier. I might return to this experiment later.
+
 require 'pdf-reader'
 
 ELEMENT_COUNT = 7 # full header, bill type, bill number, sponsor(s), action date, committee, text
