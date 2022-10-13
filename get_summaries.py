@@ -105,6 +105,9 @@ def format_latest_action_dates(summaries):
 
     for action in actions:
         dates = re.findall(DATE_PATTERN, action)
+        if not dates:
+            date_tags.append("XXXXXXXX")
+            continue
         default_year = dates[0][2]
         date = list(dates[-1])
         if date[2] == "":
