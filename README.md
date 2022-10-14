@@ -1,6 +1,6 @@
 # Semi-automated workflow for CRS Bill Digest Summaries
 
-This repository contains scripts I'm using to speed up the workflow for my Fall 2022 Law Library of Congress Remoted Metadata Internship. Much of the work is done by the python script, and the shell scripts are used to automate usage of some command-line text-processing utilities. The scripts rely heavily on `aspell`, `nvim`, and `sed`. There's even a line of `awk` in there.
+This repository contains scripts I'm using to speed up the workflow for my Fall 2022 Law Library of Congress Remoted Metadata Internship. Much of the work is done by the python script, and the shell scripts are used to automate usage of some command-line text-processing utilities. The scripts rely heavily on `aspell`, `nvim`, and `sed`. There's even a line of `awk` in there. [Miller](https://github.com/johnkerl/miller) is a recently added dependency.
 
 The workflow generally follows this order:
 ```bash
@@ -21,6 +21,6 @@ cd directory_created_by_prep
 `spell_check_and_line_mark.sh` needs a new name, but it currently runs a `sed` script that replaces some Unicode characters like double quotes and emdashes with ASCII equivalents and eliminates some weird stray OCR artifacts. It then puts the user into `aspell` to do some spell-checking, and finally opens `nvim` to allow for manual editing. This is when I enter bill action metadata besides the "Introduced" action into the spreadsheet.
 
 ### `cleanup.sh`
-`cleanup.sh` does some final spell-checking, opens the text files for a final once over, and copies the names of the text files to the clipboard for pasting into a spreadsheet. It also removes backup files and directories.
+`cleanup.sh` does some final spell-checking, opens the text files for a final once over, and copies the names of the text files to the clipboard for pasting into a spreadsheet. It also removes backup files and directories and extracts the columns that actually have data in them from the CSV metadata file into a TSV file for easier analysis using command line text processing tools.
 
 to be continued...
