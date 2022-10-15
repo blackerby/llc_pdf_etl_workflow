@@ -10,3 +10,5 @@ s/\beto.\b/etc./g
 s/\bwit inn\b/within/g
 s/\bwrorks\b/works/g
 s/\bLnited\b/United/g
+s/\bsolelv\b/solely/g
+s/\blavs\b/lays/g

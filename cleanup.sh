@@ -34,10 +34,10 @@ less check
 rm check
 
 # tsv file for easier command line text processing
-path=$(realpath *.csv)
-dirname=$(dirname $path)
-basename=$(basename $path '.csv')
-mlr --c2t cut -o -f bill_type,bill_number,sponsor,action_date,committee $path > "$dirname/$basename.tsv"
+filepath=`realpath *.csv`
+dirname=`dirname $filepath`
+basename=`basename $filepath '.csv'`
+mlr --c2t cut -o -f bill_type,bill_number,sponsor,action_date,committee $filepath > "$dirname/$basename.tsv"
 echo "Created $dirname/$basename.tsv"
 
 ls *.txt | pbcopy
