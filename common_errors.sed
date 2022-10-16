@@ -12,3 +12,7 @@ s/\bwrorks\b/works/g
 s/\bLnited\b/United/g
 s/\bsolelv\b/solely/g
 s/\blavs\b/lays/g
+s/\bArmv\b/Army/g
+s/\biniured\b/injured/g
+s/\bDedares\b/Declares/ig
+s/\bcrcp\b/crop/ig
