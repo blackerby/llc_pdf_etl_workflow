@@ -16,3 +16,4 @@ s/\bArmv\b/Army/g
 s/\biniured\b/injured/g
 s/\bDedares\b/Declares/ig
 s/\bcrcp\b/crop/ig
+s/\bWilev\b/Wiley/ig
