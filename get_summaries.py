@@ -159,7 +159,7 @@ def write_metadata(metadata, output_file_name, congress):
                     "bill_type": row[0],
                     "bill_number": row[1],
                     "sponsor": row[2],
-                    "committee": row[4],
+                    "committee": row[4] or "N/A",
                     "action_red": "",
                     "summary_version_code": "",
                     "report_number": "",
