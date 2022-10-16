@@ -98,20 +98,24 @@ def extract_summaries_and_metadata(file_path, start_page, end_page):
 def format_latest_action_dates(summaries):
     actions = []
     date_tags = []
+    intro_dates = []
 
     for summary in summaries:
         lines = summary.splitlines()
+        intro_dates.append(re.findall(DATE_PATTERN, lines[0])[0])
         actions.append(lines[1])
 
     for action in actions:
+        intro_date = intro_dates[actions.index(action)]
+        intro_year = intro_date[2]
         dates = re.findall(DATE_PATTERN, action)
-        if not dates:
-            date_tags.append("XXXXXXXX")
-            continue
-        default_year = dates[0][2]
-        date = list(dates[-1])
-        if date[2] == "":
-            date[2] = default_year
+        if dates:
+            default_year = dates[0][2] or intro_year
+            date = list(dates[-1])
+            if date[2] == "":
+                date[2] = default_year
+        else:
+            date = list(intro_date)
         date[0] = MONTHS[date[0]]
         date_tag = f"{date[2].strip()}{date[0]}{date[1].zfill(2)}"
         date_tags.append(date_tag)
