@@ -17,6 +17,7 @@ SESSION_POSITION = 3
 MONTHS = {
     "January": "01",
     "February": "02",
+    "Feb.": "02",
     "March": "03",
     "April": "04",
     "Apr.": "04",
@@ -30,7 +31,7 @@ MONTHS = {
     "December": "12",
 }
 HEADER_PATTERN = re.compile(
-        r"(((?:S|H)\.? (?:R\.? (?:J\.? Res\. ?)?)?)(\w{1,5})\.? ((?:M(?:r|essrs)\.) .+)(?:[;,:]) (\w{1,9} \d{1,2}, \d{4})\.?\ ?(?:\(([a-zA-Z ]+)\))?(?:\.|.+\.|:|.+:))"
+    r"(((?:S|H)\.? (?:R\.? (?:J\.? Res\. ?)?)?)(\w{1,5})\.? ((?:M(?:r|essrs)\.) .+?)(?:[;,:])? (\w{1,9} \d{1,2}, \d{4})\.?\ ?(?:\(([a-zA-Z ]+)\))?(?:\.|.+\.|:|.+:)?)"
 )
 DATE_PATTERN = re.compile(r"([JFMASOND][.a-z]{2,8}) (\d{1,2})[-—.,;: ]( \d{4})?")
 
@@ -103,7 +104,7 @@ def format_latest_action_dates(summaries):
     for summary in summaries:
         lines = summary.splitlines()
         intro_dates.append(re.findall(DATE_PATTERN, lines[0])[0])
-        if len(lines) > 1: 
+        if len(lines) > 1:
             actions.append(lines[1])
         else:
             actions.append("")
