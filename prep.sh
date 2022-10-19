@@ -11,9 +11,9 @@ fi
 # named following this schema: {congress}_{session}_{bill type}_{bill number}.txt
 if [[ -n $FINISH ]]
 then
-	python get_summaries.py $FILE $START $FINISH
+	python3 get_summaries.py $FILE $START $FINISH
 else
-	python get_summaries.py $FILE $START
+	python3 get_summaries.py $FILE $START
 fi
 
 # get file's name for name of new directory and iteration purposes
@@ -30,6 +30,11 @@ fi
 for f in *.{txt,csv}
 do
 	gsed -f common_errors.sed -i $f
+done
+
+for f in *.txt
+do
+	gsed -i.bak -Ez -f clean_lines.sed $f
 done
 
 mkdir $NEW_DIR

@@ -2,6 +2,7 @@
 
 # remove temporary files 
 rm -f *.bak
+rm -f *~
 
 for f in *.txt
 do
