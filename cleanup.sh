@@ -4,36 +4,6 @@
 rm -f *.bak
 rm -f *~
 
-for f in *.txt
-do
-	cat $f | aspell list >> words.list.tmp
-done
-
-if [[ -s words.list.tmp ]]
-then
-	awk '{ print "\\b" $1 "\\b" }' words.list.tmp > words.list
-	$(ggrep -nf words.list *.txt) > errors
-	rm words.list
-fi
-rm words.list.tmp
-
-if [[ -s errors ]]
-then
-	nvim -q errors
-fi
-
-rm -f errors
-
-# final check
-for f in *.txt
-do
-	cat $f >> check
-	echo >> check
-done
-
-less check
-rm check
-
 # tsv file for easier command line text processing
 filepath=`realpath *.csv`
 dirname=`dirname $filepath`
