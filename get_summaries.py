@@ -16,6 +16,7 @@ CONGRESS_POSITION = 2
 SESSION_POSITION = 3
 MONTHS = {
     "January": "01",
+    "Jan.": "01",
     "February": "02",
     "Feb.": "02",
     "March": "03",
@@ -23,6 +24,7 @@ MONTHS = {
     "April": "04",
     "Apr.": "04",
     "May": "05",
+    "Majr": "05",
     "June": "06",
     "July": "07",
     "August": "08",
@@ -30,6 +32,7 @@ MONTHS = {
     "October": "10",
     "November": "11",
     "December": "12",
+    "Alay": "05", # bad OCR, should be "May"
 }
 HEADER_PATTERN = re.compile(
     r"(((?:S|H)\.? ?(?:R\.?)? (?:J\.? Res\. ?)?)(\w{1,5})\.? ((?:M(?:rs?|essrs)\.) .+?)(?:[;,:])? (\w{1,9} \d{1,2}[.,] \d{4})[.—]? ?\n?(?:\((['0-9a-zA-Z ]+)\))?(?:\.|.+\.|:|.+:)?)",
