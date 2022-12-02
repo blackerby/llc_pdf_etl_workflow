@@ -8,6 +8,9 @@ from pathlib import Path
 
 from PyPDF2 import PdfReader
 from more_itertools import chunked
+import spacy
+
+nlp = spacy.load("en_core_web_sm")
 
 ELEMENT_COUNT = (
     7  # full header, bill type, bill number, sponsor(s), action date, committee, text
@@ -32,7 +35,7 @@ MONTHS = {
     "October": "10",
     "November": "11",
     "December": "12",
-    "Alay": "05", # bad OCR, should be "May"
+    "Alay": "05",  # bad OCR, should be "May"
 }
 HEADER_PATTERN = re.compile(
     r"(((?:S|H)\.? ?(?:R\.?)? (?:J\.? Res\. ?)?)(\w{1,5})\.? ((?:M(?:rs?|essrs)\.) .+?)(?:[;,:])? (\w{1,9} \d{1,2}[.,] \d{4})[.—]? ?\n?(?:\((['0-9a-zA-Z ]+)\))?(?:\.|.+\.|:|.+:)?)",
@@ -67,6 +70,18 @@ def name_output_file(file_stem, start_page, end_page):
         return "_".join([file_stem, str(start_page)]) + ".csv"
 
 
+def format_sentences(text):
+    doc = nlp(text)
+    sentences = [str(sent) for sent in doc.sents]
+
+    formatted_sentences = []
+    for sentence in sentences:
+        formatted_sentence = sentence.replace("- \n", "").replace(" \n", " ")
+        formatted_sentences.append(formatted_sentence)
+
+    return " ".join(formatted_sentences)
+
+
 def extract_summaries_and_metadata(file_path, start_page, end_page):
     metadata = []
     summaries = []
@@ -91,7 +106,8 @@ def extract_summaries_and_metadata(file_path, start_page, end_page):
             header, bill_type, bill_number, sponsor, date, committee, text = item
             formatted_bill_type = bill_type.strip()
             lower_bill_type = bill_type.lower().replace(" ", "").replace(".", "")
-            summary = header + text
+            formatted_text = format_sentences(text)
+            summary = header + formatted_text
             metadata.append(
                 [formatted_bill_type, bill_number, sponsor, date, committee]
             )
